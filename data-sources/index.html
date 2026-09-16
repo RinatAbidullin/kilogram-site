@@ -3,33 +3,65 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Food and nutrition data sources used by Kilogram.">
+  <meta name="description" content="Open Food Facts, USDA FoodData Central and Kilogram catalogue provenance, versions and licenses.">
+  <meta name="theme-color" content="#ff6b57">
   <title>Data Sources — Kilogram</title>
+  <link rel="icon" type="image/png" href="../assets/kilogram-app-icon.png">
+  <link rel="apple-touch-icon" href="../assets/kilogram-app-icon.png">
   <link rel="stylesheet" href="../assets/styles.css">
 </head>
 <body>
-  <header class="site-header"><div class="header-inner"><a class="brand" href="../"><span class="brand-mark">K</span><span>Kilogram</span></a><nav class="nav"><a href="../privacy/">Privacy</a><a href="../licenses/">Licenses</a><a href="../support/">Support</a></nav></div></header>
-  <main class="document"><article class="document-shell">
-    <div class="breadcrumb"><a href="../">Kilogram</a> / Data Sources</div>
-    <h1>Data Sources</h1>
-    <p class="meta">Food and nutrition information used by Kilogram</p>
-
-    <div class="notice"><strong>Before publishing:</strong> keep only the sources actually shipped in the current version of Kilogram and add links to any derivative database or attribution page that your licensing setup requires.</div>
-
-    <h2>Open Food Facts</h2>
-    <p>Some food data may be based on Open Food Facts. Open Food Facts database contents are made available under the Open Database License (ODbL) 1.0. Individual contents may be available under the Database Contents License.</p>
-    <p>Official project: <a href="https://world.openfoodfacts.org/" rel="noopener noreferrer">world.openfoodfacts.org</a></p>
-    <p>License: <a href="https://opendatacommons.org/licenses/odbl/1-0/" rel="noopener noreferrer">Open Database License (ODbL) 1.0</a></p>
-    <p>Derivative database / additional attribution: <span class="placeholder">OFF_DERIVATIVE_DATABASE_URL_OR_REMOVE</span></p>
-
-    <h2>USDA FoodData Central</h2>
-    <p>Some nutrition data may be obtained from USDA FoodData Central. Verify the exact USDA datasets included in the released database and retain any source metadata required for your implementation.</p>
-    <p>Official project: <a href="https://fdc.nal.usda.gov/" rel="noopener noreferrer">fdc.nal.usda.gov</a></p>
-
-    <h2>Other sources</h2>
-    <p>Add any additional packaged, licensed, manually curated or partner datasets used by Kilogram here. Remove this section if there are no other external data sources.</p>
-  </article></main>
-  <footer><span>© <span data-current-year></span> Kilogram.</span><span class="footer-links"><a href="../licenses/">Licenses</a><a href="../privacy/">Privacy</a></span></footer>
-  <script src="../assets/site.js"></script>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../"><img class="brand-mark" src="../assets/kilogram-app-icon.png" width="40" height="40" alt=""><span>Kilogram</span></a>
+      <nav class="nav" aria-label="Primary">
+        <a href="../privacy/">Privacy</a>
+        <a href="../terms/">Terms</a>
+        <a href="../support/">Support</a>
+        <a href="../data-sources/" aria-current="page">Data Sources</a>
+        <a href="../licenses/">Licenses</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main" tabindex="-1" class="document">
+    <article class="document-shell">
+      <div class="breadcrumb"><a href="../">Kilogram</a> / Data Sources</div>
+      <h1>Data Sources</h1>
+      <p class="meta">Prepared: <time datetime="2026-09-16">September 16, 2026</time></p>
+        <p>Kilogram uses food and nutrition information from Open Food Facts, USDA FoodData Central, and the developer-maintained Kilogram catalogue. The values support diary calculations and may not exactly match a particular product or serving. Check relevant packaging and entered quantities when accuracy matters.</p>
+        <h2>Open Food Facts</h2>
+        <p>Part of the catalogue is derived from <strong>Open Food Facts</strong>, a collaborative database contributed to by its community.</p>
+        <p>The database is available under the <strong>Open Database License (ODbL) 1.0</strong>. Individual database contents are available under the <strong>Database Contents License (DbCL) 1.0</strong>. The Kilogram-derived OFF catalogue remains subject to the applicable data licences; it is not covered by an exclusive-rights notice for the app's own code or branding.</p>
+        <ul>
+<li><a href="https://world.openfoodfacts.org/">Open Food Facts project</a></li>
+<li><a href="https://opendatacommons.org/licenses/odbl/1-0/">Open Database License 1.0</a></li>
+<li><a href="https://opendatacommons.org/licenses/dbcl/1-0/">Database Contents License 1.0</a></li>
+<li><a href="https://drive.google.com/file/d/1NzUM6jaEcSZrMdNPCFFt3goFEkJGOzcD">Download the Kilogram Open Food Facts catalogue and accompanying notices</a></li>
+</ul>
+        <p>Catalogue version: <strong>data-1848f4170a38b9c2</strong>. Prepared on September 13, 2026. The original Open Food Facts snapshot date is unknown.</p>
+        <p>The derivative contains a reduced set of fields. Earlier processing merged normalized names and close nutrition values, rounded averages, and filtered some records. Entries are not verified copies of individual product labels. The accompanying notices describe these changes. This catalogue contains no product photographs, and the Kilogram icon is not sourced from Open Food Facts.</p>
+        <p>The download is hosted on Google Drive. Its accompanying notices and metadata describe the distributed catalogue and its processing. It contains public food catalogue information, not users' personal diaries. Credit for the original source belongs to Open Food Facts and its contributors.</p>
+        <h2>USDA FoodData Central</h2>
+        <p>Kilogram includes nutrition data from <strong>FoodData Central</strong>, maintained by the <strong>U.S. Department of Agriculture, Agricultural Research Service</strong>.</p>
+        <p><strong>Dataset used in Kilogram: October 10, 2023 (date provided by the developer).</strong> This identifies the dataset used by Kilogram; it is not a claim that the app contains the latest USDA data or a separately verified official release number.</p>
+        <p>USDA describes FoodData Central data as public-domain information published under <strong>CC0 1.0</strong>.</p>
+        <ul>
+<li><a href="https://fdc.nal.usda.gov/">USDA FoodData Central</a></li>
+<li><a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</a></li>
+</ul>
+        <h2>Kilogram catalogue</h2>
+        <p>The Kilogram nutrition catalogue is compiled and maintained by <strong>Rinat Abidullin</strong>. It was assembled manually using product labels, books, and other reference materials, rather than by scraping a particular store's website.</p>
+        <p>This provenance statement does not place all reference materials under a new open licence or override rights in those materials. Open Food Facts and USDA licence notices apply to their respective data, not automatically to every catalogue in the app.</p>
+        <h2>Accuracy and attribution</h2>
+        <p>Product composition, labels, and serving sizes can change. Values may be incomplete, approximate, or outdated. Listing a source does not imply that it endorses or certifies Kilogram.</p>
+        <p>For a correction, contact <strong><a href="mailto:rinatabidullin@gmail.com">rinatabidullin@gmail.com</a></strong> with the product name, source shown in the app, and the value in question. See <a href="../licenses/">Licenses</a> for licence information.</p>
+    </article>
+  </main>
+  <footer>
+    <span>© <span data-current-year>2026</span> Rinat Abidullin · Kilogram.<br>Third-party data remains under its <a href="../licenses/">respective licenses</a>.</span>
+    <span class="footer-links"><a href="../privacy/">Privacy</a><a href="../terms/">Terms</a><a href="../support/">Support</a><a href="mailto:rinatabidullin@gmail.com">rinatabidullin@gmail.com</a></span>
+  </footer>
+  <script src="../assets/site.js" defer></script>
 </body>
 </html>

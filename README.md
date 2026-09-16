@@ -1,99 +1,76 @@
-# Kilogram website for GitHub Pages
+# Kilogram website
 
-Static website prepared for GitHub Pages. No build tools, Jekyll, npm or dependencies are required.
+Статический английский сайт Rinat Abidullin: HTML, CSS и небольшой JavaScript
+только для года copyright. Документы, контакты и навигация доступны без JavaScript.
+Сборка, npm, фреймворки, внешние шрифты и серверная обработка данных не нужны.
 
-## Pages
+Документы подготовлены 16 сентября 2026 года по текущему коду Kilogram.
+`Prepared` обозначает дату подготовки, а не утверждение или вступление условий в силу.
+Результаты сверки и решения владельца — в [RELEASE_REVIEW.md](RELEASE_REVIEW.md).
+Изменения локальные: push и публикация не выполнялись.
 
-- `/` — main page / Marketing URL
-- `/privacy/` — Privacy Policy URL
-- `/terms/` — Terms of Use
-- `/support/` — Support URL
-- `/data-sources/` — food data attribution
-- `/licenses/` — third-party notices
+## Локальная проверка
 
-## 1. Replace placeholders before publishing
+Из корня репозитория, Python 3.9 или новее:
 
-Search the repository for these values:
-
-- `DEVELOPER_NAME_OR_COMPANY`
-- `PRIVACY_EMAIL`
-- `SUPPORT_EMAIL`
-- `OFF_DERIVATIVE_DATABASE_URL_OR_REMOVE`
-- `OPEN_SOURCE_NOTICES`
-
-Also review all policy text and remove statements that do not match the released app.
-
-A quick search from Terminal:
-
-```bash
-grep -R "PLACEHOLDER\|DEVELOPER_NAME_OR_COMPANY\|PRIVACY_EMAIL\|SUPPORT_EMAIL\|OFF_DERIVATIVE_DATABASE_URL_OR_REMOVE\|OPEN_SOURCE_NOTICES" .
+```sh
+python3 scripts/check_site.py
+python3 scripts/serve.py --port 8000
 ```
 
-## 2. Create a GitHub repository
+Открыть [локальный сайт](http://127.0.0.1:8000/kilogram-site/).
+В другом терминале:
 
-Recommended repository name:
-
-```text
-kilogram-site
+```sh
+python3 scripts/check_site.py --http http://127.0.0.1:8000
+git diff --check
 ```
 
-For the simplest GitHub Pages setup, make it public.
+Скрипт проверяет семь HTML-страниц, локальные ссылки, фрагменты, mailto, assets,
+плейсхолдеры и параметры PNG. `--icon-source /path/to/original.png` дополнительно
+сравнивает иконку побайтно с оригиналом. Список внешних URL в выводе —
+инвентаризация; их доступность нужно проверять отдельно без авторизации.
 
-## 3. Push the site
+В браузере проверить все страницы при ширине 320 px и на широком экране,
+обе темы, увеличение текста до 200%, Tab/Enter и отключённый JavaScript.
+Обновление вложенных страниц и переход на несуществующий путь должны работать.
 
-```bash
-git init
-git add .
-git commit -m "Add Kilogram website"
-git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/kilogram-site.git
-git push -u origin main
-```
+Preview-сервер обслуживает только публичные страницы и assets под `/kilogram-site/`.
+На неизвестных путях он возвращает HTTP 404 с `404.html`.
+В исходном `404.html` используются полные адреса GitHub Pages, чтобы CSS, иконка
+и переход домой работали на любой глубине отсутствующего URL без JS.
+Только при локальной отдаче 404 сервер заменяет этот адрес на localhost.
+Остальные страницы используют относительные ссылки; `<base>` не используется.
 
-## 4. Enable GitHub Pages
+## Адреса для приложения и App Store Connect
 
-Repository → **Settings** → **Pages**
+| Назначение | Адрес после публикации |
+| --- | --- |
+| Privacy Policy | https://rinatabidullin.github.io/kilogram-site/privacy/ |
+| Support | https://rinatabidullin.github.io/kilogram-site/support/ |
+| Marketing | https://rinatabidullin.github.io/kilogram-site/ |
+| Terms page | https://rinatabidullin.github.io/kilogram-site/terms/ |
+| Apple Standard EULA | https://www.apple.com/legal/internet-services/itunes/dev/stdeula/ |
+| Data sources | https://rinatabidullin.github.io/kilogram-site/data-sources/ |
+| Licenses | https://rinatabidullin.github.io/kilogram-site/licenses/ |
 
-- Source: `Deploy from a branch`
-- Branch: `main`
-- Folder: `/(root)`
+Контакт поддержки и приватности: [rinatabidullin@gmail.com](mailto:rinatabidullin@gmail.com).
 
-After publishing, the URL will normally be:
+## Публикация владельцем
 
-```text
-https://YOUR_USERNAME.github.io/kilogram-site/
-```
+1. Проверить diff, отчёт и принять обязательства документов; при изменении текста
+   явно обновить дату подготовки/утверждения. Проверить фактические настройки продуктов
+   и лицензии приложения в App Store Connect.
+2. Самостоятельно закоммитить и отправить одобренные изменения
+   в [rinatabidullin/kilogram-site](https://github.com/rinatabidullin/kilogram-site).
+3. В GitHub Settings → Pages выбрать Deploy from a branch, нужную опубликованную ветку
+   и `/(root)`. Сохранить `.nojekyll`. Не запускать публикацию до одобрения документов.
+4. После успешного Pages deployment открыть адреса выше, проверить реальные
+   вложенные 404 и скачивание OFF-пакета без входа в Google.
+5. Отдельно настроить URL в iOS/App Store Connect и утвердить `documentsApproved`.
+   Эта задача не изменяет iOS-проект или настройки магазина.
 
-App Store URLs:
-
-```text
-Privacy Policy URL:
-https://YOUR_USERNAME.github.io/kilogram-site/privacy/
-
-Support URL:
-https://YOUR_USERNAME.github.io/kilogram-site/support/
-
-Marketing URL:
-https://YOUR_USERNAME.github.io/kilogram-site/
-```
-
-## Optional custom domain
-
-If you later buy a domain such as `kilogramapp.com`, configure it in GitHub Pages and then use stable URLs such as:
-
-```text
-https://kilogramapp.com/privacy/
-https://kilogramapp.com/support/
-```
-
-## Important
-
-This repository contains starter legal text, not legal advice. Before App Store submission, make sure the text matches:
-
-- actual data collection and storage;
-- App Store Privacy Nutrition Labels;
-- HealthKit usage;
-- subscriptions / Kilogram Pro;
-- all third-party services;
-- food database licenses and attribution;
-- account deletion flow, if accounts exist.
+При обновлении OFF брать URL и версию из актуального `DataSourcesConfiguration.live`,
+сверять метаданные и скачанный ZIP. SQLite и ZIP не хранить в репозитории сайта.
+Исходная иконка `assets/kilogram-app-icon.png` — неизменённый PNG 1024×1024 с alpha;
+её также используют favicon и apple-touch-icon.
