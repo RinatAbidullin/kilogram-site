@@ -1,0 +1,31 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Finder metadata
+._*
+
+# Editors / IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# Local environment files
+.env
+.env.*
+!.env.example
+
+# Archives
+*.zip
+
+# Local server / tooling
+.cache/
+.tmp/

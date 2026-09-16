@@ -1,0 +1,3 @@
+If you later configure a custom domain, create a file named CNAME in the repository root containing only the domain, for example:
+
+kilogramapp.com
