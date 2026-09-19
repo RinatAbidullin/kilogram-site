@@ -3,14 +3,9 @@
 import argparse
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import mimetypes
-from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
-ROOT = Path(__file__).resolve().parents[1]
-PREFIX = "/kilogram-site/"
-PRODUCTION = "https://rinatabidullin.github.io/kilogram-site/"
-PAGES = {"index.html", "404.html", "privacy/index.html", "terms/index.html",
-         "support/index.html", "data-sources/index.html", "licenses/index.html"}
+from site_config import BASE, PAGES, PREFIX, ROOT
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -28,6 +23,11 @@ class Handler(BaseHTTPRequestHandler):
             self.end_headers()
             return
         relative = path.removeprefix(PREFIX)
+        if path.startswith(PREFIX) and relative + "/index.html" in PAGES:
+            self.send_response(301)
+            self.send_header("Location", path + "/")
+            self.end_headers()
+            return
         if relative.endswith("/") or relative == "":
             relative += "index.html"
         file = (ROOT / relative).resolve()
@@ -41,7 +41,7 @@ class Handler(BaseHTTPRequestHandler):
             # GitHub serves this document at arbitrary missing paths. Its absolute
             # production URLs must use the preview origin during local checks.
             preview = f"http://127.0.0.1:{self.server.server_port}{PREFIX}"
-            body = body.replace(PRODUCTION.encode(), preview.encode())
+            body = body.replace(BASE.encode(), preview.encode())
         self.send_response(200 if found else 404)
         self.send_header("Content-Type", mimetypes.guess_type(file)[0] or "application/octet-stream")
         self.send_header("Content-Length", str(len(body)))

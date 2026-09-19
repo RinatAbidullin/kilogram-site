@@ -29,3 +29,4 @@
 # Local server / tooling
 .cache/
 .tmp/
+__pycache__/
