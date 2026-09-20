@@ -181,8 +181,12 @@ def check(http=None, icon_source=None):
                 if target_name not in documents or unquote(parts.fragment) not in documents[target_name].ids:
                     errors.append(f"{name}: missing fragment {value}")
     image = (ROOT / "assets/kilogram-app-icon.png").read_bytes()
-    if image[:8] != b"\x89PNG\r\n\x1a\n" or struct.unpack(">II", image[16:24]) != (1024, 1024) or image[25] != 6:
-        errors.append("App icon must be a 1024×1024 RGBA PNG")
+    # The optimized web asset is 128 px; the 40 CSS px brand mark fits at 2x/3x.
+    if (len(image) < 33 or image[:8] != b"\x89PNG\r\n\x1a\n"
+            or image[8:16] != b"\x00\x00\x00\rIHDR"
+            or struct.unpack(">II", image[16:24]) != (128, 128)
+            or image[24:26] != b"\x08\x06"):
+        errors.append("App icon must be a 128×128 8-bit RGBA PNG")
     if icon_source and image != Path(icon_source).read_bytes():
         errors.append("App icon differs from supplied original")
     if http:
@@ -221,6 +225,6 @@ def check(http=None, icon_source=None):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--http", help="Local server origin, e.g. http://127.0.0.1:8000")
-    parser.add_argument("--icon-source", help="Optional original PNG for byte-for-byte comparison")
+    parser.add_argument("--icon-source", help="Optional reference web PNG (128×128) for byte-for-byte comparison")
     args = parser.parse_args()
     check(args.http, args.icon_source)

@@ -1,4 +1,7 @@
-"""Regression checks for localization mistakes that still produce valid HTML."""
+"""Regression checks for localization and the optimized web icon contract."""
+from contextlib import redirect_stdout
+from io import StringIO
+import struct
 import unittest
 from pathlib import Path
 import shutil
@@ -7,6 +10,62 @@ from unittest.mock import patch
 
 from check_site import Document, check, localization_errors
 from site_config import PAGES, ROOT
+
+
+class IconChecks(unittest.TestCase):
+    def setUp(self):
+        directory = TemporaryDirectory()
+        self.addCleanup(directory.cleanup)
+        self.root = Path(directory.name).resolve()
+        for name in PAGES:
+            target = self.root / name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(ROOT / name, target)
+        shutil.copytree(ROOT / "assets", self.root / "assets")
+        self.icon = self.root / "assets/kilogram-app-icon.png"
+        self.original = self.icon.read_bytes()
+        root_patch = patch("check_site.ROOT", self.root)
+        root_patch.start()
+        self.addCleanup(root_patch.stop)
+
+    def test_current_web_icon_passes_site_check(self):
+        with redirect_stdout(StringIO()):
+            check()
+
+    def test_wrong_icon_dimensions_are_rejected(self):
+        for width, height in ((64, 64), (128, 64), (1024, 1024)):
+            with self.subTest(width=width, height=height):
+                image = bytearray(self.original)
+                image[16:24] = struct.pack(">II", width, height)
+                self.icon.write_bytes(image)
+                with self.assertRaisesRegex(SystemExit, "128×128 8-bit RGBA PNG"):
+                    check()
+
+    def test_wrong_bit_depth_or_missing_alpha_is_rejected(self):
+        for depth, color in ((16, 6), (8, 2), (8, 3)):
+            with self.subTest(depth=depth, color=color):
+                image = bytearray(self.original)
+                image[24:26] = bytes((depth, color))
+                self.icon.write_bytes(image)
+                with self.assertRaisesRegex(SystemExit, "128×128 8-bit RGBA PNG"):
+                    check()
+
+    def test_invalid_or_truncated_header_is_reported_without_crashing(self):
+        for image in (b"", b"not a PNG", self.original[:20], self.original[:32],
+                      self.original[:12] + b"IDAT" + self.original[16:]):
+            with self.subTest(header=image[:33]):
+                self.icon.write_bytes(image)
+                with self.assertRaisesRegex(SystemExit, "128×128 8-bit RGBA PNG"):
+                    check()
+
+    def test_optional_source_comparison_remains_byte_for_byte(self):
+        source = self.root / "reference.png"
+        source.write_bytes(self.original)
+        with redirect_stdout(StringIO()):
+            check(icon_source=source)
+        source.write_bytes(self.original + b"different bytes")
+        with self.assertRaisesRegex(SystemExit, "App icon differs from supplied original"):
+            check(icon_source=source)
 
 
 class LocalizationChecks(unittest.TestCase):
@@ -23,7 +82,7 @@ class LocalizationChecks(unittest.TestCase):
 
     def test_missing_translation_is_reported_without_crashing(self):
         with TemporaryDirectory() as directory:
-            root = Path(directory)
+            root = Path(directory).resolve()
             for name, source in self.sources.items():
                 if name == "ru/support/index.html":
                     continue
